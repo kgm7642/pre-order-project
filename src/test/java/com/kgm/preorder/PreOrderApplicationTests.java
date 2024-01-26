@@ -1,4 +1,4 @@
-package com.kgm.PreOrder;
+package com.kgm.preorder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
