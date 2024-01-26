@@ -7,25 +7,21 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
-@Table(name = "user")
-public class User {
+@Getter
+@Setter
+@Table(name = "post")
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "post_id")
     private Long id;
 
-    private String email;
+    private String content;
 
-    private String password;
-
-    private String name;
-
-    private String comment;
-
-    private String image;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private LocalDateTime date;
-
 }
