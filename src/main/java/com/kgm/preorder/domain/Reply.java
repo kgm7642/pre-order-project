@@ -1,15 +1,31 @@
 package com.kgm.preorder.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Getter
+@Setter
+@Table(name = "reply")
 public class Reply {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reply_id")
     private Long id;
 
+    @Column(length = 300, nullable = false)
     private String comment;
 
-    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id")
     private Post post;
 
     private LocalDateTime date;

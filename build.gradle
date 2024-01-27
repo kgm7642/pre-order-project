@@ -22,7 +22,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'mysql:mysql-connector-java:8.0.28' // MySQL 커넥터 버전에 따라 변경
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
