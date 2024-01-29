@@ -1,4 +1,4 @@
-package com.kgm.preorder.domain;
+package com.kgm.preorder.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +22,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users users;
+    private Member member;
 
     private LocalDateTime date;
 }
