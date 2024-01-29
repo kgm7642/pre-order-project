@@ -1,4 +1,4 @@
-package com.kgm.preorder.domain;
+package com.kgm.preorder.entity;
 
 import lombok.Getter;
 import lombok.Setter;

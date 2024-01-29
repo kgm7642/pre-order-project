@@ -1,4 +1,4 @@
-package com.kgm.preorder.domain;
+package com.kgm.preorder.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "reply_like")
-public class Reply_like {
+@Table(name = "reply_love")
+public class Reply_love {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_like_id")
+    @Column(name = "reply_love_id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users users;
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "reply_id")

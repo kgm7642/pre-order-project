@@ -1,4 +1,4 @@
-package com.kgm.preorder.domain;
+package com.kgm.preorder.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,13 +18,13 @@ public class Follow {
 
     @ManyToOne
     @JoinColumn(name = "follower_id")
-    private Users follower;
+    private Member follower;
 
     @ManyToOne
     @JoinColumn(name = "following_id")
-    private Users following;
+    private Member following;
 
-    public Follow(Users follower, Users following){
+    public Follow(Member follower, Member following){
         this.follower = follower;
         this.following = following;
     }
