@@ -1,7 +1,10 @@
 package com.kgm.preorder.controller;
 
+import com.kgm.preorder.config.security.JwtTokenProvider;
 import com.kgm.preorder.entity.Member;
+import com.kgm.preorder.repository.MemberRepository;
 import com.kgm.preorder.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +13,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
     @PostMapping("/register")
@@ -32,6 +37,23 @@ public class MemberController {
         } else {
             return ResponseEntity.badRequest().body("Invalid verification token or the token has expired.");
         }
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public String login(@RequestBody Map<String, String> user) {
+        Member member = memberRepository.findByEmail(user.get("email"));
+
+        if (member == null) {
+            throw new IllegalArgumentException("가입되지 않은 E-MAIL 입니다.");
+        }
+
+        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
     }
 }
 

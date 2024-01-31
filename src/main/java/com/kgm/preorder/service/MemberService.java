@@ -42,5 +42,8 @@ public class MemberService {
     public boolean verifyMember(String authToken) {
         return emailAuthService.verifyEmailAuth(authToken);
     }
+
+
+
 }
 
