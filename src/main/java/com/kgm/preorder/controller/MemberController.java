@@ -1,15 +1,20 @@
 package com.kgm.preorder.controller;
 
+import com.kgm.preorder.Dto.NewPassword;
 import com.kgm.preorder.config.security.JwtTokenProvider;
 import com.kgm.preorder.entity.Member;
 import com.kgm.preorder.repository.MemberRepository;
 import com.kgm.preorder.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -62,6 +67,16 @@ public class MemberController {
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
+
+    @PatchMapping("/password")
+    public ResponseEntity<String> updatePassword(@RequestBody NewPassword newPassword) {
+        log.info("비밀번호 업데이트 컨트롤러 접근");
+        memberService.updatePassword(newPassword.getEmail(), newPassword.getNewPassword());
+        return ResponseEntity.ok("Password updated successfully.");
+    }
+
+
+    // 테스트
     @GetMapping("/hello")
     public String hello() {
         return "hello";

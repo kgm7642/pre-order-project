@@ -47,6 +47,12 @@ public class MemberService {
     }
 
 
+    public void updatePassword(String email, String newPassword) {
+        Member member = memberRepository.findByEmail(email);
 
+        // 새로운 비밀번호를 인코딩하여 저장
+        member.setPassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+    }
 }
 
