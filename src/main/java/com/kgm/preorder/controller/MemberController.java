@@ -5,8 +5,9 @@ import com.kgm.preorder.entity.Member;
 import com.kgm.preorder.repository.MemberRepository;
 import com.kgm.preorder.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -14,11 +15,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final PasswordEncoder passwordEncoder;
 
     // 회원가입
     @PostMapping("/register")
@@ -41,13 +45,20 @@ public class MemberController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> user) {
-        Member member = memberRepository.findByEmail(user.get("email"));
+    public String login(@RequestBody Member loginRequest) {
+        log.info("로그인 컨트롤러 접근");
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
 
-        if (member == null) {
-            throw new IllegalArgumentException("가입되지 않은 E-MAIL 입니다.");
+        // 이메일과 비밀번호로 사용자 찾기
+        Member member = memberRepository.findByEmail(email);
+
+        // 멤버가 Null 이거나 현재 입력받은 비밀번호와 DB의 비밀번호가 다를 경우
+        if (member == null || !passwordEncoder.matches(password, member.getPassword())) {
+            throw new IllegalArgumentException("가입되지 않은 E-MAIL이거나 비밀번호가 일치하지 않습니다.");
         }
 
+        // 로그인 성공 시 토큰 생성
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
