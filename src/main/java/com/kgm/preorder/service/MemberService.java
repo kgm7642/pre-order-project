@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+
 @Service
 public class MemberService {
 
@@ -31,6 +33,7 @@ public class MemberService {
                 .name(member.getName())
                 .comment(member.getComment())
                 .image(member.getImage())
+                .roles(Collections.singletonList("ROLE_USER")) // ROLE_USER를 기본으로 설정
                 .build();
 
         memberRepository.save(newMember);
