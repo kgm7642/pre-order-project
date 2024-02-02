@@ -5,17 +5,15 @@ import com.kgm.preorder.config.security.JwtTokenProvider;
 import com.kgm.preorder.entity.Member;
 import com.kgm.preorder.repository.MemberRepository;
 import com.kgm.preorder.service.MemberService;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -26,14 +24,20 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
-
     private final PasswordEncoder passwordEncoder;
 
     // 회원가입
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody Member member) {
+    public ResponseEntity<String> registerUser(@RequestParam("email") String email,
+                                               @RequestParam("password") String password,
+                                               @RequestParam("name") String name,
+                                               @RequestParam("comment") String comment,
+                                               @RequestParam("image") MultipartFile image) {
+        log.info("회원가입 컨트롤러 접근");
+        Member member = new Member(email, password, name, comment);
 
-        memberService.registerMember(member);
+        // 이미지 저장 및 Member 엔티티에 설정
+        memberService.registerMemberWithImage(member, image);
 
         return ResponseEntity.ok("Registration successful. Please check your email for verification.");
     }
@@ -41,6 +45,8 @@ public class MemberController {
     // 링크 클릭시 이메일 인증 완료
     @GetMapping("/verify")
     public ResponseEntity<String> verifyUser(@RequestParam String token) {
+        log.info("이메일 인증 컨트롤러 접근");
+        log.debug("Entering verifyUser method with token: {}", token);
         if (memberService.verifyMember(token)) {
             return ResponseEntity.ok("Email verification successful. Your account is now activated.");
         } else {
@@ -67,7 +73,19 @@ public class MemberController {
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
+    // 회원 정보 업데이트
+    @PatchMapping("/profile")
+    public ResponseEntity<String> updateMemberProfileByEmail(
+            @RequestParam("email") String email,
+            @RequestParam("name") String newName,
+            @RequestParam("comment") String newComment,
+            @RequestParam("image") MultipartFile newImage) throws NotFoundException, IOException {
+        log.info("회원정보 업데이트 컨트롤러 접근");
+        memberService.updateMemberProfileByEmail(email, newName, newComment, newImage);
+        return ResponseEntity.ok("Member profile updated successfully.");
+    }
 
+    // 비밀번호 업데이트
     @PatchMapping("/password")
     public ResponseEntity<String> updatePassword(@RequestBody NewPassword newPassword) {
         log.info("비밀번호 업데이트 컨트롤러 접근");

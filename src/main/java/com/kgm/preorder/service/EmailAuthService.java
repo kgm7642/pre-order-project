@@ -4,6 +4,7 @@ import com.kgm.preorder.entity.EmailAuth;
 import com.kgm.preorder.entity.Member;
 import com.kgm.preorder.repository.EmailAuthRepository;
 import com.kgm.preorder.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class EmailAuthService {
 
     @Autowired

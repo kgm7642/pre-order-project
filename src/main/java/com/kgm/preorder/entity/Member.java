@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 @Data
@@ -36,8 +34,9 @@ public class Member implements UserDetails{
     @Column(nullable = false)
     private String comment;
 
-    @Column(nullable = false)
-    private String image;
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private MemberImage image;
 
     private boolean enabled;
 
@@ -46,12 +45,20 @@ public class Member implements UserDetails{
     private List<String> roles = new ArrayList<>();
 
     @Builder
-    public Member(String email, String password, String name, String comment, String image, List<Role> roles) {
+    public Member(String email, String password, String name, String comment, List<Role> roles, MemberImage image) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.comment = comment;
         this.image = image;
+        this.enabled = false; // 초기에는 활성화되지 않은 상태
+    }
+
+    public Member(String email, String password, String name, String comment) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.comment = comment;
         this.enabled = false; // 초기에는 활성화되지 않은 상태
     }
 
