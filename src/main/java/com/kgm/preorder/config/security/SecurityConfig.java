@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
                 .authorizeRequests()// 요청에 대한 사용권한 체크
                 .antMatchers("/test").authenticated()
-                .antMatchers("/user/login", "/user/register").permitAll()
+                .antMatchers("/user/login", "/user/register", "/user/verify").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .and()
