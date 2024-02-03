@@ -44,6 +44,12 @@ public class Member implements UserDetails{
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "following")
+    private List<Follow> followerList;
+
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followingList;
+
     @Builder
     public Member(String email, String password, String name, String comment, List<Role> roles, MemberImage image) {
         this.email = email;
@@ -60,6 +66,10 @@ public class Member implements UserDetails{
         this.name = name;
         this.comment = comment;
         this.enabled = false; // 초기에는 활성화되지 않은 상태
+    }
+
+    public Member(Long Id) {
+
     }
 
     public void setEnabled(boolean enabled) {
