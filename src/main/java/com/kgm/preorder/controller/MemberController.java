@@ -39,7 +39,7 @@ public class MemberController {
         // 이미지 저장 및 Member 엔티티에 설정
         memberService.registerMemberWithImage(member, image);
 
-        return ResponseEntity.ok("Registration successful. Please check your email for verification.");
+        return ResponseEntity.ok("회원가입 성공");
     }
 
     // 링크 클릭시 이메일 인증 완료
@@ -48,9 +48,9 @@ public class MemberController {
         log.info("이메일 인증 컨트롤러 접근");
         log.debug("Entering verifyUser method with token: {}", token);
         if (memberService.verifyMember(token)) {
-            return ResponseEntity.ok("Email verification successful. Your account is now activated.");
+            return ResponseEntity.ok("이메일 인증 성공");
         } else {
-            return ResponseEntity.badRequest().body("Invalid verification token or the token has expired.");
+            return ResponseEntity.badRequest().body("토큰이 만료되었습니다");
         }
     }
 
@@ -82,7 +82,7 @@ public class MemberController {
             @RequestParam("image") MultipartFile newImage) throws NotFoundException, IOException {
         log.info("회원정보 업데이트 컨트롤러 접근");
         memberService.updateMemberProfileByEmail(email, newName, newComment, newImage);
-        return ResponseEntity.ok("Member profile updated successfully.");
+        return ResponseEntity.ok("프로필 업데이트 성공");
     }
 
     // 비밀번호 업데이트
@@ -90,7 +90,7 @@ public class MemberController {
     public ResponseEntity<String> updatePassword(@RequestBody NewPassword newPassword) {
         log.info("비밀번호 업데이트 컨트롤러 접근");
         memberService.updatePassword(newPassword.getEmail(), newPassword.getNewPassword());
-        return ResponseEntity.ok("Password updated successfully.");
+        return ResponseEntity.ok("비밀번호 업데이트 성공");
     }
 
 

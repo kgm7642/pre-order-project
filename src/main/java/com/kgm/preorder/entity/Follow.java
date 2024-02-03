@@ -1,5 +1,6 @@
 package com.kgm.preorder.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "follow")
+@AllArgsConstructor
 public class Follow {
 
     @Id
@@ -23,6 +25,10 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "following_id")
     private Member following;
+
+    public Follow() {
+
+    }
 
     public Follow(Member follower, Member following){
         this.follower = follower;
