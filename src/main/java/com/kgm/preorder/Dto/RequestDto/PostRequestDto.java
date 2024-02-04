@@ -1,17 +1,17 @@
 package com.kgm.preorder.Dto.RequestDto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter @Setter
-public class FollowRequest {
+@AllArgsConstructor
+public class PostRequestDto {
 
-    private Long followerId;
+    private Long MemberId;
+    private String content;
 
-    private Long followingId;
-
-    public FollowRequest() {
+    public PostRequestDto() {
     }
 }

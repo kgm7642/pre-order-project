@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +25,19 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "post")
+    private List<Reply> replys = new ArrayList<>();
+
+    public void addReply(Reply reply) {
+        replys.add(reply);
+        reply.setPost(this);
+    }
+
+    public void removeReply(Reply reply) {
+        replys.remove(reply);
+        reply.setPost(null);
+    }
 
     private LocalDateTime date;
 }
