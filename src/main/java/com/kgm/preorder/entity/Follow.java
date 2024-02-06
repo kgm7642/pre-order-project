@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,6 +26,8 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "following_id")
     private Member following;
+
+    private LocalDateTime date;
 
     public Follow() {
 

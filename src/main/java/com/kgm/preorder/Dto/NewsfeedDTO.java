@@ -8,11 +8,14 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @AllArgsConstructor
-public class NewsfeedItem {
+public class NewsfeedDTO {
 
     private String Member;
-    private String type;
+    private String activityType;
     private String content;
     private LocalDateTime createdAt;
 
+    public NewsfeedDTO() {
+
+    }
 }

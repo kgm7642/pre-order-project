@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -77,6 +78,7 @@ public class MemberService {
                     .name(member.getName())
                     .comment(member.getComment())
                     .roles(Collections.singletonList("ROLE_USER"))
+                    .date(LocalDateTime.now())
                     .image(memberImage)
                     .build();
 
