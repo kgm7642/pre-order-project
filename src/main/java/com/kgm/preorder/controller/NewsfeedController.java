@@ -1,5 +1,6 @@
 package com.kgm.preorder.controller;
 
+import com.kgm.preorder.Dto.NewsfeedDTO;
 import com.kgm.preorder.service.NewsfeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,10 @@ public class NewsfeedController {
 
     private final NewsfeedService newsfeedService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<Map<String, Object>>> getNewsfeed(@PathVariable String MemberId) {
-        List<Map<String, Object>> newsfeed = newsfeedService.getNewsfeed(MemberId);
+    @GetMapping("/{MemberId}")
+    public ResponseEntity<List<NewsfeedDTO>> getNewsfeed(@PathVariable String MemberId) {
+        log.info("뉴스피드 컨트롤러 접근");
+        List<NewsfeedDTO> newsfeed = newsfeedService.getNewsfeed(Long.valueOf(MemberId));
         return ResponseEntity.ok(newsfeed);
     }
 

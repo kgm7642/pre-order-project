@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @Service
@@ -19,6 +20,7 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;
 
+    // 팔로우 신청
     @Transactional
     public void followMember(Long followerId, Long followingId) {
         Member follower = memberRepository.findById(followerId)
@@ -30,6 +32,7 @@ public class FollowService {
         Follow follow = new Follow();
         follow.setFollower(follower);
         follow.setFollowing(following);
+        follow.setDate(LocalDateTime.now());
         followRepository.save(follow);
     }
 }

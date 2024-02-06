@@ -6,9 +6,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Data
@@ -49,6 +51,24 @@ public class Member implements UserDetails{
 
     @OneToMany(mappedBy = "follower")
     private List<Follow> followingList;
+
+    private LocalDateTime date;
+
+    public List<Member> getFollowingMembers() {
+        List<Member> followingMembers = new ArrayList<>();
+        for (Follow follow : followingList) {
+            followingMembers.add(follow.getFollowing());
+        }
+        return followingMembers;
+    }
+
+    public List<Member> getFollowerMembers() {
+        List<Member> followers = new ArrayList<>();
+        for (Follow follow : followerList) {
+            followers.add(follow.getFollower());
+        }
+        return followers;
+    }
 
     @Builder
     public Member(String email, String password, String name, String comment, List<Role> roles, MemberImage image) {
