@@ -1,21 +1,22 @@
 package com.kgm.preorder.Dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
-public class NewsfeedDTO {
+public class MyPostActionDTO {
 
     private String Member;
     private String activityType;
     private String content;
     private LocalDateTime createdAt;
 
-    public NewsfeedDTO() {
+    public MyPostActionDTO() {
 
     }
 }

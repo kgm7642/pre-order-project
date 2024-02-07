@@ -1,5 +1,6 @@
 package com.kgm.preorder.service;
 
+import com.kgm.preorder.Dto.MyPostActionDTO;
 import com.kgm.preorder.Dto.NewsfeedDTO;
 import com.kgm.preorder.entity.*;
 import com.kgm.preorder.repository.*;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,18 +23,52 @@ public class NewsfeedService {
     private final ReplyRepository replyRepository;
     private final PostLoveRepository postLoveRepository;
 
-    // 뉴스피드
+    // 내가 팔로우한 유저들의 뉴스피드
     @Transactional
-    public List<NewsfeedDTO> getNewsfeed(Long memberId) {
+    public List<NewsfeedDTO> getNewsfeedTo(Long memberId) {
         Member member = memberRepository.getById(memberId);
-        List<Member> followingMembers = member.getFollowerMembers();
-//        followingMembers.add(member); // 자신도 포함
+        return getNewsfeedDTO(member.getFollowingMembers());
+    }
 
-        List<Post> posts = postRepository.findByMemberIn(followingMembers);
-        List<Reply> replies = replyRepository.findByMemberIn(followingMembers);
-        List<Post_love> post_loves = postLoveRepository.findByMemberIn(followingMembers);
+    // 나를 팔로우한 유저들의 뉴스피드
+    @Transactional
+    public List<NewsfeedDTO> getNewsfeedFrom(Long memberId) {
+        Member member = memberRepository.getById(memberId);
+        return getNewsfeedDTO(member.getFollowingMembers());
+    }
 
+    // 나의 포스트 활동
+    @Transactional
+    public List<MyPostActionDTO> getMyPostAction(Long memberId) {
+        List<Post> posts = postRepository.findByMemberId(memberId);
+        List<MyPostActionDTO> postAction = new ArrayList<>();
+        for(Post post : posts) {
+            for(Reply reply : post.getReplys()) {
+                MyPostActionDTO activity = new MyPostActionDTO();
+                activity.setActivityType("reply");
+                activity.setMember(reply.getMember().getUsername());
+                activity.setContent(reply.getMember().getUsername()+"님이 포스트에 댓글을 남겼습니다.");
+                activity.setCreatedAt(reply.getDate());
+                postAction.add(activity);
+            }
+            for(Post_love love : post.getPost_loves()) {
+                MyPostActionDTO activity = new MyPostActionDTO();
+                activity.setActivityType("love");
+                activity.setMember(love.getMember().getUsername());
+                activity.setContent(love.getMember().getUsername()+"님이 포스트를 좋아합니다.");
+                activity.setCreatedAt(love.getDate());
+                postAction.add(activity);
+            }
+        }
+        return postAction;
+    }
+
+    // 뉴스피드를 반환하는 메서드
+    public List<NewsfeedDTO> getNewsfeedDTO(List<Member> members) {
         List<NewsfeedDTO> newsfeed = new ArrayList<>();
+        List<Post> posts = postRepository.findByMemberIn(members);
+        List<Reply> replies = replyRepository.findByMemberIn(members);
+        List<Post_love> post_loves = postLoveRepository.findByMemberIn(members);
 
         log.info("posts : {} " , posts);
         for (Post post : posts) {
@@ -43,7 +79,6 @@ public class NewsfeedService {
             activity.setCreatedAt(post.getDate());
             newsfeed.add(activity);
         }
-
         log.info("replies : {} " , replies);
         for (Reply reply : replies) {
             NewsfeedDTO activity = new NewsfeedDTO();
@@ -53,7 +88,6 @@ public class NewsfeedService {
             activity.setCreatedAt(reply.getDate());
             newsfeed.add(activity);
         }
-
         log.info("post_loves : {} " , post_loves);
         for (Post_love post_love : post_loves) {
             NewsfeedDTO activity = new NewsfeedDTO();
@@ -63,9 +97,8 @@ public class NewsfeedService {
             activity.setCreatedAt(post_love.getDate());
             newsfeed.add(activity);
         }
-
-        log.info("followingMembers : {} " , followingMembers);
-        for (Member follow : followingMembers) {
+        log.info("followingMembers : {} " , members);
+        for (Member follow : members) {
             log.info("follow : {} : " , follow);
             for(Member FromMember : follow.getFollowerMembers()) {
                 log.info("FromMember : {} " , FromMember);
