@@ -54,6 +54,7 @@ public class Member implements UserDetails{
 
     private LocalDateTime date;
 
+    // 나를 팔로우한 유저들
     public List<Member> getFollowingMembers() {
         List<Member> followingMembers = new ArrayList<>();
         for (Follow follow : followingList) {
@@ -62,6 +63,7 @@ public class Member implements UserDetails{
         return followingMembers;
     }
 
+    // 내가 팔로우한 유저들
     public List<Member> getFollowerMembers() {
         List<Member> followers = new ArrayList<>();
         for (Follow follow : followerList) {

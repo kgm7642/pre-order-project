@@ -73,6 +73,13 @@ public class MemberController {
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
+    // 로그아웃웃
+   @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        memberService.logout(token);
+        return ResponseEntity.ok("로그아웃 성공");
+    }
+
     // 회원 정보 업데이트
     @PatchMapping("/profile")
     public ResponseEntity<String> updateMemberProfileByEmail(

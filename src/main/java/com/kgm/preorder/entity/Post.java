@@ -29,6 +29,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Reply> replys = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<Post_love> post_loves = new ArrayList<>();
+
     public void addReply(Reply reply) {
         replys.add(reply);
         reply.setPost(this);
