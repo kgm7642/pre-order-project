@@ -23,6 +23,7 @@ public class FollowService {
     // 팔로우 신청
     @Transactional
     public void followMember(Long followerId, Long followingId) {
+        log.info("followerId : {} , followingId : {} ", followerId, followingId);
         Member follower = memberRepository.findById(followerId)
                 .orElseThrow(() -> new NoSuchElementException("아이디가 존재하지 않음"));
 
