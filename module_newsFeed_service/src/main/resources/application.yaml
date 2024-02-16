@@ -1,0 +1,54 @@
+server.port: 8082
+
+# 데이터베이스 설정
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/preorder?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kgm7642@gmail.com
+    password: pqnz gzfk bjdy qowi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+# 로깅 설정
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+# 이미지 업로드 디렉토리 설정
+image:
+  upload:
+    directory: D:/SpringBoot_99/profileImage
+
+# 패스워드 인코딩 설정
+spring.security:
+  user:
+    password:
+      encoder: bcrypt
+
+# JWT 설정
+jwt:
+  expiration: 86400000  # 24시간
+  secret: 64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff
+  token-valid-time: 1800000
