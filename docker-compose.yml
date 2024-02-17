@@ -1,24 +1,29 @@
 version: '3.8'
 
 services:
-  mysql:
+  mysql1:
     image: mysql:latest
-    container_name: mysql
     restart: always
+    ports:
+      - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: sample_database
-      MYSQL_USER: sample_user
-      MYSQL_PASSWORD: sample_password
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: rudALS1342!!
+      MYSQL_DATABASE: user_database
 
-  spring-boot-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: spring-boot-app
+  mysql2:
+    image: mysql:latest
+    restart: always
     ports:
-      - "8080:8080"
-    depends_on:
-      - mysql
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rudALS1342!!
+      MYSQL_DATABASE: activity_database
+
+  mysql3:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rudALS1342!!
+      MYSQL_DATABASE: newsfeed_database
