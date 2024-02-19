@@ -2,9 +2,14 @@ server:
   port: 8761
 
 spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
   application:
-    name: discovery-service
+    name: eureka-server
 eureka:
+  instance:
+    hostname: 127.0.0.1
   client:
     register-with-eureka: false
     fetch-registry: false

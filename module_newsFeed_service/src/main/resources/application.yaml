@@ -2,13 +2,13 @@ server.port: 8082
 
 # 데이터베이스 설정
 spring:
+  application:
+    name: newsfeed-service
   datasource:
     url: jdbc:mysql://localhost:3306/preorder?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  # JPA 설정
   jpa:
     hibernate:
       ddl-auto: update
@@ -30,6 +30,13 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
 
 # 로깅 설정
 logging:
