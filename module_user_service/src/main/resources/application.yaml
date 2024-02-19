@@ -9,8 +9,6 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  # JPA 설정
   jpa:
     hibernate:
       ddl-auto: update
@@ -38,7 +36,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
 
 # 로깅 설정
 logging:
