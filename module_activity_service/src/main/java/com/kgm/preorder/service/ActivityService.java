@@ -1,27 +1,46 @@
 package com.kgm.preorder.service;
 
-import com.kgm.preorder.Dto.RequestDto.PostRequestDto;
 import com.kgm.preorder.Dto.RequestDto.PostLoveRequestDto;
+import com.kgm.preorder.Dto.RequestDto.PostRequestDto;
 import com.kgm.preorder.Dto.RequestDto.ReplyLoveRequestDto;
 import com.kgm.preorder.Dto.RequestDto.ReplyRequestDto;
 import com.kgm.preorder.entity.*;
 import com.kgm.preorder.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class PostService {
-
-
-    private final MemberService memberService;
+@Slf4j
+public class ActivityService {
     private final MemberRepository memberRepository;
     private final ReplyRepository replyRepository;
     private final PostRepository postRepository;
     private final PostLoveRepository postLoveRepository;
     private final ReplyLoveRepository replyLoveRepository;
+    private final FollowRepository followRepository;
+
+    // 팔로우 신청
+    @Transactional
+    public void followMember(Long followerId, Long followingId) {
+        log.info("followerId : {} , followingId : {} ", followerId, followingId);
+        Member follower = memberRepository.findById(followerId)
+                .orElseThrow(() -> new NoSuchElementException("아이디가 존재하지 않음"));
+
+        Member following = memberRepository.findById(followingId)
+                .orElseThrow(() -> new NoSuchElementException("아이디가 존재하지 않음"));
+
+        Follow follow = new Follow();
+        follow.setFollower(follower);
+        follow.setFollowing(following);
+        follow.setDate(LocalDateTime.now());
+        followRepository.save(follow);
+    }
 
     // 포스트 등록
     public void createPost(PostRequestDto postRequestDto) {

@@ -1,7 +1,7 @@
 package com.kgm.preorder.service;
 
-import com.kgm.preorder.Dto.MyPostActionDTO;
 import com.kgm.preorder.Dto.NewsfeedDTO;
+import com.kgm.preorder.Dto.ResponseDto.MyPostActionDTO;
 import com.kgm.preorder.entity.*;
 import com.kgm.preorder.repository.*;
 import lombok.RequiredArgsConstructor;

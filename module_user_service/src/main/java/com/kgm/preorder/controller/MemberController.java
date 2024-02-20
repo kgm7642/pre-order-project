@@ -1,6 +1,6 @@
 package com.kgm.preorder.controller;
 
-import com.kgm.preorder.Dto.NewPassword;
+import com.kgm.preorder.Dto.ResponseDto.NewPassword;
 import com.kgm.preorder.config.security.JwtTokenProvider;
 import com.kgm.preorder.entity.Member;
 import com.kgm.preorder.repository.MemberRepository;
@@ -73,7 +73,7 @@ public class MemberController {
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
-    // 로그아웃웃
+    // 로그아웃
    @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
         memberService.logout(token);
@@ -100,12 +100,11 @@ public class MemberController {
         return ResponseEntity.ok("비밀번호 업데이트 성공");
     }
 
-
-    // 테스트
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
+//    // 테스트
+//    @GetMapping("/hello")
+//    public String hello() {
+//        return "hello";
+//    }
 }
 
 
