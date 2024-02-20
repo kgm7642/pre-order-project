@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Table;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -164,52 +162,5 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(newPassword));
         memberRepository.save(member);
     }
-
-
-/*    @Transactional
-    public void registerMember(Member member) {
-
-        // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
-
-        Member newMember = Member.builder()
-                .email(member.getEmail())
-                .password(encodedPassword)
-                .name(member.getName())
-                .comment(member.getComment())
-                .roles(Collections.singletonList("ROLE_USER")) // ROLE_USER를 기본으로 설정
-                .image(member.getImage())
-                .build();
-
-        memberRepository.save(newMember);
-
-        emailAuthService.sendVerificationEmail(newMember);
-    }*/
-
-/*
-    public void saveProfileImage(MultipartFile image, Member member) {
-        try {
-            File uploadDir = new File(imageUploadDirectory);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            log.info("이미지 서비스 접근1");
-            String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
-            String filePath = imageUploadDirectory + File.separator + fileName;
-
-            image.transferTo(new File(filePath));
-            log.info("이미지 서비스 접근2");
-            Image memberImage = new Image();
-            memberImage.setImagePath(fileName);
-            memberImage.setMember(member);
-            member.setImage(memberImage);
-
-            memberRepository.save(member);
-
-        } catch (IOException e) {
-            // 예외 처리 로직 추가
-            e.printStackTrace();
-        }
-    }*/
 }
 

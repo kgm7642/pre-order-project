@@ -1,4 +1,4 @@
-package com.kgm.preorder.Dto;
+package com.kgm.preorder.Dto.ResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

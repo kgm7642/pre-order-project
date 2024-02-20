@@ -1,7 +1,7 @@
 package com.kgm.preorder.controller;
 
-import com.kgm.preorder.Dto.MyPostActionDTO;
 import com.kgm.preorder.Dto.NewsfeedDTO;
+import com.kgm.preorder.Dto.ResponseDto.MyPostActionDTO;
 import com.kgm.preorder.service.NewsfeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
