@@ -30,7 +30,6 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-
 eureka:
   client:
     register-with-eureka: true
@@ -59,3 +58,4 @@ jwt:
   expiration: 86400000  # 24시간
   secret: 64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff
   token-valid-time: 1800000
+
