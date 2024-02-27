@@ -18,11 +18,11 @@ public class ActivityController {
     private final ActivityService activityService;
 
 
+    // 팔로우 신청
     @PostMapping("/follow")
     public ResponseEntity<String> followMember(@RequestBody FollowRequestDto request) {
         log.info("팔로우 컨트롤러 접근");
         activityService.followMember(request.getFollowerId(), request.getFollowingId());
-
         return ResponseEntity.badRequest().body("팔로우 성공");
     }
 

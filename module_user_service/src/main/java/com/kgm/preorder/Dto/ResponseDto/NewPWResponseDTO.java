@@ -6,12 +6,12 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-public class NewPassword {
+public class NewPWResponseDTO {
 
     private String email;
     private String newPassword;
 
-    public NewPassword() {
+    public NewPWResponseDTO() {
 
     }
 }
