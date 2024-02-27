@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @AllArgsConstructor
-public class PostResponseDto {
+public class PostResponseDTO {
 
     private Long id;
     private String content;
     private LocalDateTime date;
 
-    public PostResponseDto() {
+    public PostResponseDTO() {
     }
 }
