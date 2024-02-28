@@ -2,9 +2,11 @@ package com.kgm.preorder.controller;
 
 import com.kgm.preorder.Dto.DefaultRes;
 import com.kgm.preorder.Dto.RequestDto.LoginRequestDTO;
-import com.kgm.preorder.Dto.ResponseDto.NewPWResponseDTO;
+import com.kgm.preorder.Dto.RequestDto.UpdatePWRequestDTO;
+import com.kgm.preorder.Dto.ResponseDto.UpdateResponseDTO;
 import com.kgm.preorder.Dto.ResponseMessage;
 import com.kgm.preorder.Dto.StatusCode;
+import com.kgm.preorder.config.jwt.JwtUtil;
 import com.kgm.preorder.config.security.JwtTokenProvider;
 import com.kgm.preorder.entity.Member;
 import com.kgm.preorder.repository.MemberRepository;
@@ -30,6 +32,7 @@ public class MemberController {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // 회원가입
     @PostMapping("/register")
@@ -90,23 +93,25 @@ public class MemberController {
 
     // 회원 정보 업데이트
     @PatchMapping("/profile")
-    public ResponseEntity<String> updateMemberProfileByEmail(
-            @RequestParam("email") String email,
+    public ResponseEntity updateMemberProfileByEmail(
+            @RequestHeader("Authorization") String token,
             @RequestParam("newName") String newName,
             @RequestParam("newComment") String newComment,
             @RequestParam("newImage") MultipartFile newImage) throws NotFoundException, IOException {
         log.info("회원정보 업데이트 컨트롤러 접근");
+        String email = jwtUtil.getEmailFromToken(token);
         memberService.updateMemberProfileByEmail(email, newName, newComment, newImage);
-//      memberService.updateMemberProfileByEmail(updateRequestDTO.getEmail(), updateRequestDTO.getNewName(), updateRequestDTO.getNewComment(), updateRequestDTO.getNewImage());
-        return ResponseEntity.ok("프로필 업데이트 성공");
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER, new UpdateResponseDTO(newName,newComment)), HttpStatus.OK);
     }
 
     // 비밀번호 업데이트
     @PatchMapping("/password")
-    public ResponseEntity<String> updatePassword(@RequestBody NewPWResponseDTO newPWResponseDTO) {
-        log.info("비밀번호 업데이트 컨트롤러 접근");
-        memberService.updatePassword(newPWResponseDTO.getEmail(), newPWResponseDTO.getNewPassword());
-        return ResponseEntity.ok("비밀번호 업데이트 성공");
+    public ResponseEntity updatePassword(@RequestHeader("Authorization") String token, @RequestBody UpdatePWRequestDTO updatePWRequestDTO) {
+        log.info("비밀번호 수정 컨트롤러 접근");
+        String email = jwtUtil.getEmailFromToken(token);
+        log.info("email {} ", email);
+        memberService.updatePassword(email, updatePWRequestDTO.getNewPW());
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER_PW), HttpStatus.OK);
     }
 
 //    // 테스트
