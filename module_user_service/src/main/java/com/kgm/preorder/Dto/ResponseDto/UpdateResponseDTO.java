@@ -1,4 +1,4 @@
-package com.kgm.preorder.Dto.RequestDto;
+package com.kgm.preorder.Dto.ResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,12 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UpdateRequestDTO {
+public class UpdateResponseDTO {
     private String newName;
     private String newComment;
-    private MultipartFile newImage;
 
-    public UpdateRequestDTO() {
+    public UpdateResponseDTO() {
 
     }
 }
