@@ -42,7 +42,7 @@ public class EmailAuthService {
         try {
             helper.setTo(member.getEmail());
             helper.setSubject("회원 가입을 위한 이메일 인증");
-            helper.setText("<html><body>계정을 활성화하려면 다음 링크를 클릭하세요: <a href='http://localhost:8080/user/verify?token=" + emailAuth.getAuthToken() + "'>인증 링크</a></body></html>", true);
+            helper.setText("<html><body>계정을 활성화하려면 다음 링크를 클릭하세요: <a href='http://localhost:8080/user/verify?token=" + emailAuth.getAuthToken() + "&expireDate="+ emailAuth.getExpireDate() + "'>인증 링크</a></body></html>", true);
 
         } catch (MessagingException e ) {
             e.printStackTrace();
