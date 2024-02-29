@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
@@ -52,10 +55,15 @@ public class MemberController {
 
     // 링크 클릭시 이메일 인증 완료
     @GetMapping("/verify")
-    public ResponseEntity<String> verifyUser(@RequestParam String token) {
+    public ResponseEntity<String> verifyUser(@RequestParam String token, @RequestParam String expireDate) {
+        String dateString = expireDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+        LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+//        Date date = java.sql.Timestamp.valueOf(dateTime);
+
+        log.info("LocalDateTime.now().isAfter(expireDate) {} " , LocalDateTime.now().isAfter(dateTime));
         log.info("이메일 인증 컨트롤러 접근");
-        log.debug("Entering verifyUser method with token: {}", token);
-        if (memberService.verifyMember(token)) {
+        if (memberService.verifyMember(token) && !LocalDateTime.now().isAfter(dateTime)) {
             return ResponseEntity.ok("이메일 인증 성공");
         } else {
             return ResponseEntity.badRequest().body("토큰이 만료되었습니다");

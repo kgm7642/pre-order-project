@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +33,7 @@ public class JwtTokenProvider {
             @Value("${jwt.token-valid-time}") long tokenValidTime,
             CustomUserDetailService userDetailsService
     ) {
-        this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
+        this.secret = secret;
         this.tokenValidTime = tokenValidTime;
         this.userDetailsService = userDetailsService;
     }
