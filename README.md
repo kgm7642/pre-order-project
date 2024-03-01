@@ -31,5 +31,5 @@
 - 프로필 이미지 파일 업로드 구현
 - API Gateway를 통한 마이크로서비스 아키텍처 구현
 
-### 📌 주요 기능
-- 
+### 📌 주요기능 - [상세보기](https://github.com/kgm7642/pre-order-project/wiki/프로젝트-주요-기능)
+### 📌 트러블 슈팅 - [상세보기](https://blog.naver.com/kgm7642)
