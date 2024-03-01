@@ -18,7 +18,7 @@
 #### Database
 - MySQL
 
-### 버전관리 및 프로젝트 관리
+#### 버전관리 및 프로젝트 관리
 - Github, Notion
 
 ### ⏰ 개발 기간
@@ -32,4 +32,5 @@
 - API Gateway를 통한 마이크로서비스 아키텍처 구현
 
 ### 📌 주요기능 - [상세보기](https://github.com/kgm7642/pre-order-project/wiki/프로젝트-주요-기능)
+### 📌 기술선택이유 - [상세보기]()
 ### 📌 트러블 슈팅 - [상세보기](https://blog.naver.com/kgm7642)
