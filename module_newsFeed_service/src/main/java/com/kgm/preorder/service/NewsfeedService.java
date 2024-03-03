@@ -25,22 +25,22 @@ public class NewsfeedService {
 
     // 내가 팔로우한 유저들의 뉴스피드
     @Transactional
-    public List<NewsfeedDTO> getNewsfeedTo(Long memberId) {
-        Member member = memberRepository.getById(memberId);
+    public List<NewsfeedDTO> getNewsfeedTo(String email) {
+        Member member = memberRepository.getById(memberRepository.findByEmail(email).getId());
         return getNewsfeedDTO(member.getFollowingMembers());
     }
 
     // 나를 팔로우한 유저들의 뉴스피드
     @Transactional
-    public List<NewsfeedDTO> getNewsfeedFrom(Long memberId) {
-        Member member = memberRepository.getById(memberId);
+    public List<NewsfeedDTO> getNewsfeedFrom(String email) {
+        Member member = memberRepository.getById(memberRepository.findByEmail(email).getId());
         return getNewsfeedDTO(member.getFollowingMembers());
     }
 
     // 나의 포스트 활동
     @Transactional
-    public List<MyPostActionDTO> getMyPostAction(Long memberId) {
-        List<Post> posts = postRepository.findByMemberId(memberId);
+    public List<MyPostActionDTO> getMyPostAction(String email) {
+        List<Post> posts = postRepository.findByMemberId(memberRepository.findByEmail(email).getId());
         List<MyPostActionDTO> postAction = new ArrayList<>();
         for(Post post : posts) {
             for(Reply reply : post.getReplys()) {

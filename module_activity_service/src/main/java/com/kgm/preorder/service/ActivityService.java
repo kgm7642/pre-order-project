@@ -27,9 +27,9 @@ public class ActivityService {
 
     // 팔로우 신청
     @Transactional
-    public void followMember(Long followerId, Long followingId) {
-        log.info("followerId : {} , followingId : {} ", followerId, followingId);
-        Member follower = memberRepository.findById(followerId)
+    public void followMember(String email, Long followingId) {
+        log.info("followerId : {} , followingId : {} ", memberRepository.findByEmail(email).getId(), followingId);
+        Member follower = memberRepository.findById(memberRepository.findByEmail(email).getId())
                 .orElseThrow(() -> new NoSuchElementException("아이디가 존재하지 않음"));
 
         Member following = memberRepository.findById(followingId)
@@ -43,8 +43,8 @@ public class ActivityService {
     }
 
     // 포스트 등록
-    public void createPost(PostRequestDto postRequestDto) {
-        Member member = memberRepository.findById(postRequestDto.getMemberId()).
+    public void createPost(String email, PostRequestDto postRequestDto) {
+        Member member = memberRepository.findById(memberRepository.findByEmail(email).getId()).
                 orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다"));
         Post post = new Post();
         post.setMember(member);
@@ -55,10 +55,10 @@ public class ActivityService {
     }
 
     // 댓글 등록
-    public void createReply(ReplyRequestDto replyRequestDto) {
+    public void createReply(String email, ReplyRequestDto replyRequestDto) {
         Post post = postRepository.findById(replyRequestDto.getPostId())
                 .orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다"));
-        Member member = memberRepository.findById(replyRequestDto.getMemberId()).
+        Member member = memberRepository.findById(memberRepository.findByEmail(email).getId()).
                 orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다"));
 
         Reply reply = new Reply();
@@ -71,10 +71,10 @@ public class ActivityService {
     }
 
     // 포스트 좋아요
-    public void addPostLove(PostLoveRequestDto postLoveRequestDto) {
+    public void addPostLove(String email, PostLoveRequestDto postLoveRequestDto) {
         Post post = postRepository.findById(postLoveRequestDto.getPostId())
                 .orElseThrow(() -> new RuntimeException("게시물이 존재하지 않습니다"));
-        Member member = memberRepository.findById(postLoveRequestDto.getMemberId()).
+        Member member = memberRepository.findById(memberRepository.findByEmail(email).getId()).
                 orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다"));
 
         Post_love postLove = new Post_love();
@@ -86,10 +86,10 @@ public class ActivityService {
     }
 
     // 댓글 좋아요
-    public void addReplyLove(ReplyLoveRequestDto replyLoveRequestDto) {
+    public void addReplyLove(String email, ReplyLoveRequestDto replyLoveRequestDto) {
         Reply reply = replyRepository.findById(replyLoveRequestDto.getReplyId())
                 .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다"));
-        Member member = memberRepository.findById(replyLoveRequestDto.getMemberId()).
+        Member member = memberRepository.findById(memberRepository.findByEmail(email).getId()).
                 orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다"));
 
         Reply_love replyLove = new Reply_love();

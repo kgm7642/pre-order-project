@@ -9,6 +9,7 @@ import com.kgm.preorder.Dto.StatusCode;
 import com.kgm.preorder.config.jwt.JwtUtil;
 import com.kgm.preorder.config.security.JwtTokenProvider;
 import com.kgm.preorder.entity.Member;
+import com.kgm.preorder.repository.BlacklistTokenRepository;
 import com.kgm.preorder.repository.MemberRepository;
 import com.kgm.preorder.service.MemberService;
 import javassist.NotFoundException;
@@ -35,6 +36,7 @@ public class MemberController {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final BlacklistTokenRepository blacklistTokenRepository;
     private final JwtUtil jwtUtil;
 
     // 회원가입
@@ -105,8 +107,13 @@ public class MemberController {
             @RequestHeader("Authorization") String token,
             @RequestParam("newName") String newName,
             @RequestParam("newComment") String newComment,
-            @RequestParam("newImage") MultipartFile newImage) throws NotFoundException, IOException {
+            @RequestParam("newImage") MultipartFile newImage
+        ) throws NotFoundException, IOException {
         log.info("회원정보 업데이트 컨트롤러 접근");
+        log.info("blacklistTokenRepository.existsByToken(token) {}", blacklistTokenRepository.existsByToken(token));
+        if(blacklistTokenRepository.existsByToken(token)) {
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.TOEKN_EXPIRE), HttpStatus.OK);
+        }
         String email = jwtUtil.getEmailFromToken(token);
         memberService.updateMemberProfileByEmail(email, newName, newComment, newImage);
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER, new UpdateResponseDTO(newName,newComment)), HttpStatus.OK);
@@ -116,6 +123,10 @@ public class MemberController {
     @PatchMapping("/password")
     public ResponseEntity updatePassword(@RequestHeader("Authorization") String token, @RequestBody UpdatePWRequestDTO updatePWRequestDTO) {
         log.info("비밀번호 수정 컨트롤러 접근");
+        log.info("blacklistTokenRepository.existsByToken(token) {}", blacklistTokenRepository.existsByToken(token));
+        if(blacklistTokenRepository.existsByToken(token)) {
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.TOEKN_EXPIRE), HttpStatus.OK);
+        }
         String email = jwtUtil.getEmailFromToken(token);
         log.info("email {} ", email);
         memberService.updatePassword(email, updatePWRequestDTO.getNewPW());

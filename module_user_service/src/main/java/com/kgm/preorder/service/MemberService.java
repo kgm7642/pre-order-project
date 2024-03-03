@@ -86,10 +86,6 @@ public class MemberService {
                     .image(memberImage)
                     .build();
 
-
-            // 회원 저장
-            memberRepository.save(newMember);
-
             // 이메일 발송 등 다른 작업 수행
             emailAuthService.sendVerificationEmail(newMember);
 
@@ -107,6 +103,7 @@ public class MemberService {
     }
 
     // 로그아웃
+    @Transactional
     public void logout(String token) {
         if (!blacklistTokenRepository.existsByToken(token)) {
             BlacklistToken blacklistToken = new BlacklistToken();
@@ -154,7 +151,6 @@ public class MemberService {
     }
 
     // 비밀번호 변경
-    @Transactional
     public void updatePassword(String email, String newPassword) {
         Member member = memberRepository.findByEmail(email);
 

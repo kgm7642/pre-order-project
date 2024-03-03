@@ -22,14 +22,10 @@ public class EmailAuthService {
 
     @Autowired
     private EmailAuthRepository emailAuthRepository;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private JavaMailSender javaMailSender;
-
-    private static final Long MAX_EXPIRE_TIME = 5L;
 
     @Transactional
     public void sendVerificationEmail(Member member) {
