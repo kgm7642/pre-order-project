@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostLoveRequestDto {
 
-    private Long MemberId;
     private Long PostId;
 
     public PostLoveRequestDto() {

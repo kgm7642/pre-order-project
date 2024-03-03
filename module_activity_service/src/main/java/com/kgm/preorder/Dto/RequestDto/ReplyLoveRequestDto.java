@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ReplyLoveRequestDto {
 
-    private Long MemberId;
     private Long ReplyId;
 
     public ReplyLoveRequestDto() {
