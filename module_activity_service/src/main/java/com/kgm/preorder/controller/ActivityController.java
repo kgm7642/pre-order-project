@@ -46,6 +46,18 @@ public class ActivityController {
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.POST_SUCCESS), HttpStatus.OK);
     }
 
+    // 포스트 수정
+    @PatchMapping("/post/{postId}")
+    public ResponseEntity updatePost(@RequestHeader("Authorization") String token, @PathVariable Long postId,  @RequestBody PostRequestDto postRequestDto) {
+        log.info("포스트 수정 컨트롤러 접근");
+        if(blacklistTokenRepository.existsByToken(token)) {
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.TOEKN_EXPIRE), HttpStatus.OK);
+        }
+        String email = jwtUtil.getEmailFromToken(token);
+        activityService.updatePost(email, postId, postRequestDto);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.POST_UPDATE_SUCCESS), HttpStatus.OK);
+    }
+
     // 댓글 등록
     @PostMapping("/reply")
     public ResponseEntity<String> createReply(@RequestHeader("Authorization") String token, @RequestBody ReplyRequestDto replyRequestDto) {
